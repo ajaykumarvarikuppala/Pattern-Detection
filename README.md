@@ -1,34 +1,34 @@
 # Genetic Algorithm Strategies for Enhanced Pattern Detection
 
-A small research prototype that explores using a genetic algorithm (DEAP) with OHLCV price data and a Plotly candlestick chart to demonstrate harmonic-pattern detection.
+This project explores genetic search for X-A-B-C-D harmonic-pattern candidates in OHLCV price history. The notebook extracts alternating swing points, evolves five-point sequences with a genetic algorithm, scores their price ratios against configurable Gartley, Bat, Butterfly, and Crab bands, and plots the top candidates.
 
 ## Repository contents
 
-- `execute.ipynb` — the original project notebook.
-- `dataset.csv` — OHLCV data with currency symbols in the price columns.
-- `dataset1.csv` — another OHLCV dataset with numeric price columns.
-- `requirements.txt` — Python packages used by the notebook.
+- `execute.ipynb` — data preparation, swing extraction, genetic search, scoring, and visualizations.
+- `dataset.csv` — OHLCV data whose price fields include currency symbols.
+- `dataset1.csv` — a second OHLCV dataset with numeric price fields.
+- `requirements.txt` — notebook dependencies.
 
-## Setup
+## Run the notebook
 
-Use Python 3.10 or newer, then install the dependencies:
+Use Python 3.10 or newer:
 
 ```bash
 python -m pip install -r requirements.txt
+jupyter notebook execute.ipynb
 ```
 
-Open `execute.ipynb` in Jupyter Notebook or JupyterLab to review the experiment.
+Set `DATASET_FILE` near the top of the notebook to `dataset.csv` or `dataset1.csv`.
 
-## Current limitations
+## How scoring works
 
-The notebook is an early prototype and its results should be treated as illustrative:
+The notebook identifies local highs and lows, filters out smaller moves, then uses a genetic algorithm to search alternating swing-point sequences. Candidate sequences are scored by their fit to the ratio bands defined in `PATTERN_BANDS`. The random seed and search settings are configurable in the notebook.
 
-1. It tries to load `dataset4.csv`, which is not included in the supplied project archive. The included CSVs have the expected OHLCV columns; update the notebook's input filename to `dataset.csv` or `dataset1.csv` before running.
-2. The genetic algorithm evolves four random values, but the fitness checks are placeholders and do not calculate harmonic ratios from the price series.
-3. The plotted detection points are fixed example indices, not points found by the algorithm.
+## Limitations
 
-These limitations mean the notebook does not yet provide validated pattern detections. The project needs a real pattern-fitness function and evaluation against labeled data before its results can be interpreted as detection performance.
+- The supplied datasets have no expert labels. The reported score measures ratio fit to the configured bands; it is **not** detection accuracy, predictive performance, or evidence of a profitable trading strategy.
+- The ratio ranges are heuristic settings and should be documented, reviewed, and evaluated against labeled examples.
+- Swing extraction uses centered windows that look ahead in time. This is suitable for historical exploration but would need redesign for real-time detection.
+- Dataset source and redistribution terms were not included in the supplied archive. Confirm and document them before redistributing the CSV files.
+- This is a research prototype, not financial advice.
 
-## Data notes
-
-The supplied CSVs contain date, close, volume, open, high, and low columns. The archive does not include data-source or license information; add those details before redistributing the datasets if you have them.
